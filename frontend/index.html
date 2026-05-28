@@ -8,373 +8,75 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
-    --bg:        #0b0d11;
-    --surface:   #13161d;
-    --surface2:  #1c2029;
-    --border:    #252933;
-    --border2:   #363d4e;
-    --text:      #e2e8f0;
-    --muted:     #6b7694;
-    --accent:    #7c6af7;
-    --accent2:   #a78bfa;
-    --green:     #34d399;
-    --amber:     #fbbf24;
-    --red:       #f87171;
-    --cyan:      #22d3ee;
-    --font-mono: 'Space Mono', monospace;
-    --font-body: 'DM Sans', sans-serif;
-    --radius:    6px;
-    --radius-lg: 12px;
+    --bg:#0b0d11;--surface:#13161d;--surface2:#1c2029;--border:#252933;--border2:#363d4e;
+    --text:#e2e8f0;--muted:#6b7694;--accent:#7c6af7;--accent2:#a78bfa;
+    --green:#34d399;--amber:#fbbf24;--red:#f87171;--cyan:#22d3ee;
+    --font-mono:'Space Mono',monospace;--font-body:'DM Sans',sans-serif;
+    --radius:6px;--radius-lg:12px;
   }
-
-  html { font-size: 15px; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font-body);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* ── Header ── */
-  header {
-    border-bottom: 1px solid var(--border);
-    padding: 0 2rem;
-    height: 56px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    background: var(--bg);
-    z-index: 100;
-  }
-  .logo {
-    font-family: var(--font-mono);
-    font-size: 13px;
-    letter-spacing: 0.08em;
-    color: var(--accent2);
-  }
-  .logo span { color: var(--muted); }
-  .status-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: var(--green);
-    display: inline-block;
-    margin-right: 6px;
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-  .status-text { font-size: 12px; color: var(--muted); font-family: var(--font-mono); }
-
-  /* ── Layout ── */
-  .shell { display: flex; flex: 1; overflow: hidden; }
-
-  /* ── Sidebar ── */
-  nav {
-    width: 220px;
-    min-width: 220px;
-    border-right: 1px solid var(--border);
-    padding: 1.5rem 0;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-  .nav-section {
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-    padding: 0 1.25rem;
-    margin: 1rem 0 0.5rem;
-    font-family: var(--font-mono);
-  }
-  .nav-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 9px 1.25rem;
-    cursor: pointer;
-    font-size: 13.5px;
-    color: var(--muted);
-    transition: color 0.15s, background 0.15s;
-    border-left: 2px solid transparent;
-    font-weight: 400;
-  }
-  .nav-item:hover { color: var(--text); background: var(--surface); }
-  .nav-item.active {
-    color: var(--accent2);
-    border-left-color: var(--accent);
-    background: rgba(124,106,247,0.08);
-  }
-  .nav-icon { font-size: 15px; width: 18px; text-align: center; }
-
-  /* ── Main panel ── */
-  main {
-    flex: 1;
-    overflow-y: auto;
-    padding: 2rem 2.5rem;
-    max-width: 900px;
-  }
-
-  .panel { display: none; }
-  .panel.active { display: block; }
-
-  /* ── Panel header ── */
-  .panel-header { margin-bottom: 2rem; }
-  .panel-title {
-    font-size: 22px;
-    font-weight: 500;
-    letter-spacing: -0.02em;
-    margin-bottom: 6px;
-  }
-  .panel-desc { font-size: 14px; color: var(--muted); line-height: 1.6; }
-
-  /* ── Cards ── */
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 1.5rem;
-    margin-bottom: 1.25rem;
-  }
-  .card-title {
-    font-size: 12px;
-    font-family: var(--font-mono);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 1rem;
-  }
-
-  /* ── Slider control ── */
-  .control-row {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-  }
-  .control-label {
-    font-size: 13px;
-    color: var(--muted);
-    min-width: 130px;
-    font-family: var(--font-mono);
-    font-size: 12px;
-  }
-  .control-value {
-    font-family: var(--font-mono);
-    font-size: 14px;
-    color: var(--accent2);
-    min-width: 42px;
-    text-align: right;
-  }
-  input[type=range] {
-    flex: 1;
-    -webkit-appearance: none;
-    height: 3px;
-    background: var(--border2);
-    border-radius: 2px;
-    outline: none;
-  }
-  input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 16px; height: 16px;
-    border-radius: 50%;
-    background: var(--accent);
-    cursor: pointer;
-    border: 2px solid var(--bg);
-    box-shadow: 0 0 0 2px var(--accent);
-  }
-
-  /* ── Textarea ── */
-  .prompt-label {
-    font-size: 12px;
-    font-family: var(--font-mono);
-    color: var(--muted);
-    margin-bottom: 6px;
-    display: block;
-  }
-  textarea {
-    width: 100%;
-    background: var(--surface2);
-    border: 1px solid var(--border2);
-    border-radius: var(--radius);
-    color: var(--text);
-    font-family: var(--font-body);
-    font-size: 14px;
-    line-height: 1.6;
-    padding: 10px 12px;
-    resize: vertical;
-    outline: none;
-    transition: border-color 0.15s;
-    margin-bottom: 1rem;
-  }
-  textarea:focus { border-color: var(--accent); }
-
-  /* ── Buttons ── */
-  .btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
-  button {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    letter-spacing: 0.05em;
-    padding: 9px 18px;
-    border-radius: var(--radius);
-    border: 1px solid var(--border2);
-    background: transparent;
-    color: var(--text);
-    cursor: pointer;
-    transition: all 0.15s;
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-  }
-  button:hover { background: var(--surface2); border-color: var(--accent); color: var(--accent2); }
-  button:active { transform: scale(0.97); }
-  button.primary {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #fff;
-  }
-  button.primary:hover { background: var(--accent2); border-color: var(--accent2); color: var(--bg); }
-  button:disabled { opacity: 0.4; cursor: not-allowed; }
-
-  /* ── Output ── */
-  .output-box {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1rem 1.25rem;
-    font-size: 14px;
-    line-height: 1.75;
-    color: var(--text);
-    min-height: 80px;
-    white-space: pre-wrap;
-    word-break: break-word;
-    position: relative;
-    margin-top: 1rem;
-  }
-  .output-box.loading { color: var(--muted); }
-  .output-meta {
-    display: flex;
-    gap: 12px;
-    margin-top: 8px;
-    flex-wrap: wrap;
-  }
-  .meta-chip {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    padding: 3px 8px;
-    border-radius: 4px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    color: var(--muted);
-  }
-  .meta-chip.accent { border-color: var(--accent); color: var(--accent2); }
-  .meta-chip.green { border-color: var(--green); color: var(--green); }
-  .meta-chip.amber { border-color: var(--amber); color: var(--amber); }
-
-  /* ── Spinner ── */
-  .spinner {
-    width: 14px; height: 14px;
-    border: 2px solid var(--border2);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 0.6s linear infinite;
-    display: inline-block;
-    vertical-align: -3px;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  /* ── Compare grid ── */
-  .compare-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 12px;
-    margin-top: 1rem;
-  }
-  .compare-col {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1rem;
-  }
-  .compare-col-head {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--accent2);
-    margin-bottom: 8px;
-    letter-spacing: 0.06em;
-  }
-  .compare-col-body { font-size: 13px; line-height: 1.65; color: var(--text); }
-
-  /* ── Logprobs bars ── */
-  .lp-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 5px 0;
-    font-size: 13px;
-  }
-  .lp-token {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    min-width: 100px;
-    color: var(--cyan);
-    background: rgba(34,211,238,0.07);
-    padding: 1px 6px;
-    border-radius: 3px;
-  }
-  .lp-bar-bg {
-    flex: 1;
-    height: 10px;
-    background: var(--border);
-    border-radius: 5px;
-    overflow: hidden;
-  }
-  .lp-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--accent), var(--cyan));
-    border-radius: 5px;
-    transition: width 0.5s ease;
-  }
-  .lp-pct {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: var(--muted);
-    min-width: 38px;
-    text-align: right;
-  }
-  .lp-alts {
-    font-size: 11px;
-    color: var(--muted);
-    margin: -3px 0 4px 110px;
-    font-family: var(--font-mono);
-  }
-  .lp-alt-token { color: var(--amber); }
-
-  /* ── Info note ── */
-  .info-note {
-    background: rgba(124,106,247,0.07);
-    border: 1px solid rgba(124,106,247,0.2);
-    border-radius: var(--radius);
-    padding: 8px 12px;
-    font-size: 12px;
-    color: var(--muted);
-    margin-bottom: 1rem;
-    line-height: 1.6;
-  }
-
-  /* ── Scrollbar ── */
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+  html{font-size:15px;}
+  body{background:var(--bg);color:var(--text);font-family:var(--font-body);min-height:100vh;display:flex;flex-direction:column;}
+  header{border-bottom:1px solid var(--border);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--bg);z-index:100;}
+  .logo{font-family:var(--font-mono);font-size:13px;letter-spacing:.08em;color:var(--accent2);}
+  .logo span{color:var(--muted);}
+  .status-dot{width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block;margin-right:6px;animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+  .status-text{font-size:12px;color:var(--muted);font-family:var(--font-mono);}
+  .shell{display:flex;flex:1;overflow:hidden;}
+  nav{width:220px;min-width:220px;border-right:1px solid var(--border);padding:1.5rem 0;display:flex;flex-direction:column;gap:2px;}
+  .nav-section{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:0 1.25rem;margin:1rem 0 .5rem;font-family:var(--font-mono);}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:9px 1.25rem;cursor:pointer;font-size:13.5px;color:var(--muted);transition:color .15s,background .15s;border-left:2px solid transparent;font-weight:400;}
+  .nav-item:hover{color:var(--text);background:var(--surface);}
+  .nav-item.active{color:var(--accent2);border-left-color:var(--accent);background:rgba(124,106,247,.08);}
+  .nav-icon{font-size:15px;width:18px;text-align:center;}
+  main{flex:1;overflow-y:auto;padding:2rem 2.5rem;max-width:900px;}
+  .panel{display:none;}.panel.active{display:block;}
+  .panel-header{margin-bottom:2rem;}
+  .panel-title{font-size:22px;font-weight:500;letter-spacing:-.02em;margin-bottom:6px;}
+  .panel-desc{font-size:14px;color:var(--muted);line-height:1.6;}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1.25rem;}
+  .card-title{font-size:12px;font-family:var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;}
+  .control-row{display:flex;align-items:center;gap:1rem;margin-bottom:1rem;}
+  .control-label{font-size:12px;color:var(--muted);min-width:130px;font-family:var(--font-mono);}
+  .control-value{font-family:var(--font-mono);font-size:14px;color:var(--accent2);min-width:42px;text-align:right;}
+  input[type=range]{flex:1;-webkit-appearance:none;height:3px;background:var(--border2);border-radius:2px;outline:none;}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--accent);cursor:pointer;border:2px solid var(--bg);box-shadow:0 0 0 2px var(--accent);}
+  .prompt-label{font-size:12px;font-family:var(--font-mono);color:var(--muted);margin-bottom:6px;display:block;}
+  textarea{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);color:var(--text);font-family:var(--font-body);font-size:14px;line-height:1.6;padding:10px 12px;resize:vertical;outline:none;transition:border-color .15s;margin-bottom:1rem;}
+  textarea:focus{border-color:var(--accent);}
+  .btn-row{display:flex;gap:10px;flex-wrap:wrap;}
+  button{font-family:var(--font-mono);font-size:12px;letter-spacing:.05em;padding:9px 18px;border-radius:var(--radius);border:1px solid var(--border2);background:transparent;color:var(--text);cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:7px;}
+  button:hover{background:var(--surface2);border-color:var(--accent);color:var(--accent2);}
+  button:active{transform:scale(.97);}
+  button.primary{background:var(--accent);border-color:var(--accent);color:#fff;}
+  button.primary:hover{background:var(--accent2);border-color:var(--accent2);color:var(--bg);}
+  button:disabled{opacity:.4;cursor:not-allowed;}
+  .output-box{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.25rem;font-size:14px;line-height:1.75;color:var(--text);min-height:80px;white-space:pre-wrap;word-break:break-word;position:relative;margin-top:1rem;}
+  .output-box.loading{color:var(--muted);}
+  .output-meta{display:flex;gap:12px;margin-top:8px;flex-wrap:wrap;}
+  .meta-chip{font-family:var(--font-mono);font-size:11px;padding:3px 8px;border-radius:4px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);}
+  .meta-chip.accent{border-color:var(--accent);color:var(--accent2);}
+  .meta-chip.green{border-color:var(--green);color:var(--green);}
+  .meta-chip.amber{border-color:var(--amber);color:var(--amber);}
+  .spinner{width:14px;height:14px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin .6s linear infinite;display:inline-block;vertical-align:-3px;}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .compare-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:1rem;}
+  .compare-col{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;}
+  .compare-col-head{font-family:var(--font-mono);font-size:11px;color:var(--accent2);margin-bottom:8px;letter-spacing:.06em;}
+  .compare-col-body{font-size:13px;line-height:1.65;color:var(--text);}
+  .lp-row{display:flex;align-items:center;gap:10px;margin:5px 0;font-size:13px;}
+  .lp-token{font-family:var(--font-mono);font-size:12px;min-width:100px;color:var(--cyan);background:rgba(34,211,238,.07);padding:1px 6px;border-radius:3px;}
+  .lp-bar-bg{flex:1;height:10px;background:var(--border);border-radius:5px;overflow:hidden;}
+  .lp-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--cyan));border-radius:5px;transition:width .5s ease;}
+  .lp-pct{font-family:var(--font-mono);font-size:12px;color:var(--muted);min-width:38px;text-align:right;}
+  .lp-alts{font-size:11px;color:var(--muted);margin:-3px 0 4px 110px;font-family:var(--font-mono);}
+  .lp-alt-token{color:var(--amber);}
+  .info-note{background:rgba(124,106,247,.07);border:1px solid rgba(124,106,247,.2);border-radius:var(--radius);padding:8px 12px;font-size:12px;color:var(--muted);margin-bottom:1rem;line-height:1.6;}
+  ::-webkit-scrollbar{width:6px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
 </style>
 </head>
 <body>
-
 <header>
   <div class="logo">inference<span>/</span>explorer</div>
   <div>
@@ -382,94 +84,63 @@
     <span class="status-text" id="status-text">connecting…</span>
   </div>
 </header>
-
 <div class="shell">
   <nav>
     <div class="nav-section">experiments</div>
-    <div class="nav-item active" onclick="showPanel('temperature')" data-panel="temperature">
-      <span class="nav-icon">🌡</span> Temperature
-    </div>
-    <div class="nav-item" onclick="showPanel('top_p')" data-panel="top_p">
-      <span class="nav-icon">🎯</span> Top P
-    </div>
-    <div class="nav-item" onclick="showPanel('max_tokens')" data-panel="max_tokens">
-      <span class="nav-icon">📏</span> Max tokens
-    </div>
-    <div class="nav-item" onclick="showPanel('freq')" data-panel="freq">
-      <span class="nav-icon">🔁</span> Repetition
-    </div>
-    <div class="nav-item" onclick="showPanel('logprobs')" data-panel="logprobs">
-      <span class="nav-icon">📊</span> Logprobs
-    </div>
-
+    <div class="nav-item active" onclick="showPanel('temperature')" data-panel="temperature"><span class="nav-icon">🌡</span> Temperature</div>
+    <div class="nav-item" onclick="showPanel('top_p')" data-panel="top_p"><span class="nav-icon">🎯</span> Top P</div>
+    <div class="nav-item" onclick="showPanel('max_tokens')" data-panel="max_tokens"><span class="nav-icon">📏</span> Max tokens</div>
+    <div class="nav-item" onclick="showPanel('freq')" data-panel="freq"><span class="nav-icon">🔁</span> Repetition</div>
+    <div class="nav-item" onclick="showPanel('logprobs')" data-panel="logprobs"><span class="nav-icon">📊</span> Logprobs</div>
     <div class="nav-section" style="margin-top:2rem">standalone</div>
-    <div class="nav-item" onclick="showPanel('cli')">
-      <span class="nav-icon">⌨</span> CLI script
-    </div>
+    <div class="nav-item" onclick="showPanel('cli')"><span class="nav-icon">⌨</span> CLI script</div>
   </nav>
-
   <main>
-
-    <!-- Temperature -->
     <div class="panel active" id="panel-temperature">
       <div class="panel-header">
         <div class="panel-title">Temperature</div>
         <div class="panel-desc">Controls randomness. Lower values produce focused, deterministic output. Higher values unlock creativity and unpredictability.</div>
       </div>
-
       <div class="card">
         <div class="card-title">single run</div>
         <div class="control-row">
           <span class="control-label">temperature</span>
-          <input type="range" min="0" max="1" step="0.05" value="0.7" id="temp-slider"
-            oninput="document.getElementById('temp-disp').textContent=parseFloat(this.value).toFixed(2)">
+          <input type="range" min="0" max="1" step="0.05" value="0.7" id="temp-slider" oninput="document.getElementById('temp-disp').textContent=parseFloat(this.value).toFixed(2)">
           <span class="control-value" id="temp-disp">0.70</span>
         </div>
         <span class="prompt-label">prompt</span>
         <textarea id="temp-prompt" rows="2">Write a creative opening sentence for a science fiction story about time travel.</textarea>
-        <div class="btn-row">
-          <button class="primary" onclick="runTemperature()">▶ Run</button>
-        </div>
+        <div class="btn-row"><button class="primary" onclick="runTemperature()">▶ Run</button></div>
         <div id="temp-meta"></div>
         <div class="output-box loading" id="temp-out">Output will appear here…</div>
       </div>
-
       <div class="card">
         <div class="card-title">compare — 0.0 / 0.5 / 1.0</div>
         <span class="prompt-label">prompt (shared)</span>
         <textarea id="cmp-prompt" rows="2">Write a creative opening sentence for a science fiction story about time travel.</textarea>
-        <div class="btn-row">
-          <button onclick="runCompare()">⧉ Run comparison</button>
-        </div>
+        <div class="btn-row"><button onclick="runCompare()">⧉ Run comparison</button></div>
         <div class="compare-grid" id="cmp-grid"></div>
       </div>
     </div>
-
-    <!-- Top P -->
     <div class="panel" id="panel-top_p">
       <div class="panel-header">
         <div class="panel-title">Top P</div>
-        <div class="panel-desc">Nucleus sampling. Samples from the smallest set of tokens whose cumulative probability ≥ top_p. Lower values restrict vocabulary to the most likely tokens.</div>
+        <div class="panel-desc">Nucleus sampling. Samples from the smallest set of tokens whose cumulative probability ≥ top_p.</div>
       </div>
-      <div class="info-note">Claude does not expose top_p directly. The vocabulary effect is simulated via system instruction calibrated to the chosen value.</div>
+      <div class="info-note">Claude does not expose top_p directly. The vocabulary effect is simulated via system instruction.</div>
       <div class="card">
         <div class="control-row">
           <span class="control-label">top_p</span>
-          <input type="range" min="0.05" max="1" step="0.05" value="0.9" id="topp-slider"
-            oninput="document.getElementById('topp-disp').textContent=parseFloat(this.value).toFixed(2)">
+          <input type="range" min="0.05" max="1" step="0.05" value="0.9" id="topp-slider" oninput="document.getElementById('topp-disp').textContent=parseFloat(this.value).toFixed(2)">
           <span class="control-value" id="topp-disp">0.90</span>
         </div>
         <span class="prompt-label">prompt</span>
         <textarea id="topp-prompt" rows="2">Describe an alien planet in three sentences.</textarea>
-        <div class="btn-row">
-          <button class="primary" onclick="runTopP()">▶ Run</button>
-        </div>
+        <div class="btn-row"><button class="primary" onclick="runTopP()">▶ Run</button></div>
         <div id="topp-meta"></div>
         <div class="output-box loading" id="topp-out">Output will appear here…</div>
       </div>
     </div>
-
-    <!-- Max tokens -->
     <div class="panel" id="panel-max_tokens">
       <div class="panel-header">
         <div class="panel-title">Max tokens</div>
@@ -478,69 +149,54 @@
       <div class="card">
         <div class="control-row">
           <span class="control-label">max_tokens</span>
-          <input type="range" min="10" max="500" step="10" value="100" id="maxt-slider"
-            oninput="document.getElementById('maxt-disp').textContent=this.value">
+          <input type="range" min="10" max="500" step="10" value="100" id="maxt-slider" oninput="document.getElementById('maxt-disp').textContent=this.value">
           <span class="control-value" id="maxt-disp">100</span>
         </div>
         <span class="prompt-label">prompt</span>
         <textarea id="maxt-prompt" rows="2">Explain the concept of machine learning in simple terms.</textarea>
-        <div class="btn-row">
-          <button class="primary" onclick="runMaxTokens()">▶ Run</button>
-        </div>
+        <div class="btn-row"><button class="primary" onclick="runMaxTokens()">▶ Run</button></div>
         <div id="maxt-meta"></div>
         <div class="output-box loading" id="maxt-out">Output will appear here…</div>
       </div>
     </div>
-
-    <!-- Frequency penalty -->
     <div class="panel" id="panel-freq">
       <div class="panel-header">
         <div class="panel-title">Repetition penalty</div>
-        <div class="panel-desc">Penalizes tokens that have already appeared, forcing vocabulary diversity and reducing repetition loops.</div>
+        <div class="panel-desc">Penalizes tokens that have already appeared, forcing vocabulary diversity.</div>
       </div>
-      <div class="info-note">Claude does not expose a numeric frequency_penalty knob. This experiment uses a calibrated system instruction to produce the equivalent behavioral effect.</div>
+      <div class="info-note">Claude does not expose frequency_penalty as a number. This uses a calibrated system instruction instead.</div>
       <div class="card">
         <div class="control-row">
           <span class="control-label">penalty</span>
-          <input type="range" min="0" max="1" step="0.1" value="0" id="freq-slider"
-            oninput="document.getElementById('freq-disp').textContent=parseFloat(this.value).toFixed(1)">
+          <input type="range" min="0" max="1" step="0.1" value="0" id="freq-slider" oninput="document.getElementById('freq-disp').textContent=parseFloat(this.value).toFixed(1)">
           <span class="control-value" id="freq-disp">0.0</span>
         </div>
         <span class="prompt-label">prompt</span>
         <textarea id="freq-prompt" rows="2">Write a paragraph about the ocean using vivid language.</textarea>
-        <div class="btn-row">
-          <button class="primary" onclick="runFreq()">▶ Run</button>
-        </div>
+        <div class="btn-row"><button class="primary" onclick="runFreq()">▶ Run</button></div>
         <div id="freq-meta"></div>
         <div class="output-box loading" id="freq-out">Output will appear here…</div>
       </div>
     </div>
-
-    <!-- Logprobs -->
     <div class="panel" id="panel-logprobs">
       <div class="panel-header">
         <div class="panel-title">Logprobs</div>
-        <div class="panel-desc">Token-level probability analysis. Wide bars indicate high confidence. Multiple alternatives indicate the model genuinely considered other tokens.</div>
+        <div class="panel-desc">Token-level probability analysis. Wide bars = high confidence.</div>
       </div>
-      <div class="info-note">We ask the model to return its own token-level uncertainty estimates as JSON, then visualize them below.</div>
+      <div class="info-note">We ask the model to return token-level uncertainty estimates as JSON, then visualize them.</div>
       <div class="card">
         <div class="control-row">
           <span class="control-label">top alternatives</span>
-          <input type="range" min="1" max="5" step="1" value="3" id="lp-slider"
-            oninput="document.getElementById('lp-disp').textContent=this.value">
+          <input type="range" min="1" max="5" step="1" value="3" id="lp-slider" oninput="document.getElementById('lp-disp').textContent=this.value">
           <span class="control-value" id="lp-disp">3</span>
         </div>
         <span class="prompt-label">prompt</span>
         <textarea id="lp-prompt" rows="2">Complete this sentence: "The best programming language is"</textarea>
-        <div class="btn-row">
-          <button class="primary" onclick="runLogprobs()">▶ Run</button>
-        </div>
+        <div class="btn-row"><button class="primary" onclick="runLogprobs()">▶ Run</button></div>
         <div class="output-box loading" id="lp-text" style="margin-top:1rem">Output will appear here…</div>
         <div id="lp-bars" style="margin-top:1.25rem"></div>
       </div>
     </div>
-
-    <!-- CLI -->
     <div class="panel" id="panel-cli">
       <div class="panel-header">
         <div class="panel-title">Standalone CLI script</div>
@@ -548,35 +204,15 @@
       </div>
       <div class="card">
         <div class="card-title">usage</div>
-        <div class="output-box" style="font-family:var(--font-mono);font-size:13px;line-height:2">
-pip install anthropic
+        <div class="output-box" style="font-family:var(--font-mono);font-size:13px;line-height:2">pip install anthropic
 export ANTHROPIC_API_KEY="sk-ant-..."
 python inference_parameters.py</div>
       </div>
-      <div class="card">
-        <div class="card-title">what each experiment does</div>
-        <table style="width:100%;border-collapse:collapse;font-size:13px;line-height:1.8">
-          <tr style="color:var(--muted);font-size:11px;font-family:var(--font-mono);border-bottom:1px solid var(--border)">
-            <td style="padding:6px 0">EXPERIMENT</td>
-            <td>PARAMETER</td>
-            <td>VALUES TESTED</td>
-          </tr>
-          <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px 0">1</td><td style="color:var(--accent2)">temperature</td><td style="color:var(--muted)">0.0, 0.5, 1.0</td></tr>
-          <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px 0">2</td><td style="color:var(--accent2)">top_p</td><td style="color:var(--muted)">0.2, 0.6, 1.0</td></tr>
-          <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px 0">3</td><td style="color:var(--accent2)">max_tokens</td><td style="color:var(--muted)">30, 100, 300</td></tr>
-          <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px 0">4</td><td style="color:var(--accent2)">frequency_penalty</td><td style="color:var(--muted)">0.0, 0.5, 1.0</td></tr>
-          <tr><td style="padding:6px 0">5</td><td style="color:var(--accent2)">logprobs</td><td style="color:var(--muted)">top 5 alternatives</td></tr>
-        </table>
-      </div>
     </div>
-
   </main>
 </div>
-
 <script>
-const API = window.location.origin.includes('localhost') || window.location.origin.includes('127.0.0.1')
-  ? 'http://localhost:8000'
-  : (window.API_BASE || 'http://localhost:8000');
+const API = 'http://localhost:8001';
 
 async function checkHealth() {
   try {
@@ -598,23 +234,22 @@ function showPanel(id) {
   document.getElementById('panel-' + id)?.classList.add('active');
   document.querySelector(`[data-panel="${id}"]`)?.classList.add('active');
 }
-
-function setOut(id, html, isLoading = false) {
+function setOut(id, html, isLoading=false) {
   const el = document.getElementById(id);
   el.innerHTML = html;
   el.className = 'output-box' + (isLoading ? ' loading' : '');
 }
 function setMeta(id, chips) {
-  document.getElementById(id).innerHTML = chips.map(([label, cls]) =>
-    `<span class="meta-chip ${cls || ''}">${label}</span>`
-  ).join('') ? `<div class="output-meta">${chips.map(([label, cls]) => `<span class="meta-chip ${cls||''}">${label}</span>`).join('')}</div>` : '';
+  document.getElementById(id).innerHTML = chips.length
+    ? `<div class="output-meta">${chips.map(([label,cls])=>`<span class="meta-chip ${cls||''}">${label}</span>`).join('')}</div>`
+    : '';
 }
 const loadingHTML = `<span class="spinner"></span> generating…`;
 
 async function post(path, body) {
   const r = await fetch(API + path, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {'Content-Type':'application/json'},
     body: JSON.stringify(body),
   });
   if (!r.ok) { const e = await r.json(); throw new Error(e.detail || r.statusText); }
@@ -624,10 +259,9 @@ async function post(path, body) {
 async function runTemperature() {
   const temp = parseFloat(document.getElementById('temp-slider').value);
   const prompt = document.getElementById('temp-prompt').value;
-  setOut('temp-out', loadingHTML, true);
-  setMeta('temp-meta', []);
+  setOut('temp-out', loadingHTML, true); setMeta('temp-meta', []);
   try {
-    const d = await post('/temperature', { prompt, temperature: temp });
+    const d = await post('/temperature', {prompt, temperature: temp});
     setOut('temp-out', escHtml(d.text));
     const label = temp < 0.3 ? ['deterministic','green'] : temp < 0.7 ? ['balanced','accent'] : ['creative','amber'];
     setMeta('temp-meta', [[`temp ${temp.toFixed(2)} · ${label[0]}`, label[1]], [`↑ ${d.input_tokens} · ↓ ${d.output_tokens} tokens`,'']]);
@@ -639,13 +273,13 @@ async function runCompare() {
   const grid = document.getElementById('cmp-grid');
   const temps = [0.0, 0.5, 1.0];
   const labels = ['0.0 — deterministic', '0.5 — balanced', '1.0 — creative'];
-  grid.innerHTML = temps.map((t, i) =>
+  grid.innerHTML = temps.map((t,i) =>
     `<div class="compare-col"><div class="compare-col-head">${labels[i]}</div><div class="compare-col-body" id="cmp-${i}"><span class="spinner"></span></div></div>`
   ).join('');
   const results = await Promise.all(temps.map(t =>
-    post('/temperature', { prompt, temperature: t }).then(d => d.text).catch(e => '⚠ ' + e.message)
+    post('/temperature', {prompt, temperature: t}).then(d => d.text).catch(e => '⚠ ' + e.message)
   ));
-  results.forEach((r, i) => { document.getElementById('cmp-' + i).textContent = r; });
+  results.forEach((r,i) => { document.getElementById('cmp-'+i).textContent = r; });
 }
 
 async function runTopP() {
@@ -653,7 +287,7 @@ async function runTopP() {
   const prompt = document.getElementById('topp-prompt').value;
   setOut('topp-out', loadingHTML, true);
   try {
-    const d = await post('/top-p', { prompt, top_p });
+    const d = await post('/top-p', {prompt, top_p});
     setOut('topp-out', escHtml(d.text));
     const label = top_p < 0.4 ? 'narrow vocab' : top_p < 0.8 ? 'balanced' : 'rich vocab';
     setMeta('topp-meta', [[`top_p ${top_p.toFixed(2)} · ${label}`,'accent'], [`↑ ${d.input_tokens} · ↓ ${d.output_tokens} tokens`,'']]);
@@ -665,7 +299,7 @@ async function runMaxTokens() {
   const prompt = document.getElementById('maxt-prompt').value;
   setOut('maxt-out', loadingHTML, true);
   try {
-    const d = await post('/max-tokens', { prompt, max_tokens });
+    const d = await post('/max-tokens', {prompt, max_tokens});
     setOut('maxt-out', escHtml(d.text));
     setMeta('maxt-meta', [[`limit ${max_tokens} tokens`,'amber'], [`↓ ${d.output_tokens} tokens used`,'green']]);
   } catch(e) { setOut('maxt-out', '⚠ ' + e.message); }
@@ -676,7 +310,7 @@ async function runFreq() {
   const prompt = document.getElementById('freq-prompt').value;
   setOut('freq-out', loadingHTML, true);
   try {
-    const d = await post('/frequency-penalty', { prompt, frequency_penalty });
+    const d = await post('/frequency-penalty', {prompt, frequency_penalty});
     setOut('freq-out', escHtml(d.text));
     const label = frequency_penalty < 0.3 ? 'no penalty' : frequency_penalty < 0.7 ? 'moderate' : 'strict';
     setMeta('freq-meta', [[`penalty ${frequency_penalty.toFixed(1)} · ${label}`,'accent'], [`↑ ${d.input_tokens} · ↓ ${d.output_tokens} tokens`,'']]);
@@ -689,13 +323,13 @@ async function runLogprobs() {
   setOut('lp-text', loadingHTML, true);
   document.getElementById('lp-bars').innerHTML = '';
   try {
-    const d = await post('/logprobs', { prompt, top_logprobs });
+    const d = await post('/logprobs', {prompt, top_logprobs});
     setOut('lp-text', escHtml(d.text));
     const barsEl = document.getElementById('lp-bars');
     if (d.logprobs && d.logprobs.length) {
       barsEl.innerHTML = '<div class="card-title" style="margin-bottom:10px">token confidence</div>';
-      d.logprobs.slice(0, 12).forEach(t => {
-        const pct = Math.round((t.chosen_prob || 0) * 100);
+      d.logprobs.slice(0,12).forEach(t => {
+        const pct = Math.round((t.chosen_prob||0)*100);
         const row = document.createElement('div');
         row.className = 'lp-row';
         row.innerHTML = `<span class="lp-token">${escHtml(t.token)}</span><div class="lp-bar-bg"><div class="lp-bar-fill" style="width:${pct}%"></div></div><span class="lp-pct">${pct}%</span>`;
@@ -703,7 +337,7 @@ async function runLogprobs() {
         if (t.alternatives && t.alternatives.length) {
           const altEl = document.createElement('div');
           altEl.className = 'lp-alts';
-          altEl.innerHTML = t.alternatives.slice(0, top_logprobs).map(a =>
+          altEl.innerHTML = t.alternatives.slice(0,top_logprobs).map(a =>
             `<span class="lp-alt-token">${escHtml(a.token)}</span> ${Math.round((a.prob||0)*100)}%`
           ).join(' &nbsp;·&nbsp; ');
           barsEl.appendChild(altEl);
