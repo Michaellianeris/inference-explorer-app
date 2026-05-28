@@ -43,7 +43,7 @@ All five experiments run sequentially and print formatted results to the termina
 
 ```bash
 cp .env.example .env
-# Edit .env and set ANTHROPIC_API_KEY
+nano .env
 ```
 
 **2. Build and start**
@@ -55,10 +55,10 @@ docker compose up --build
 **3. Open the UI**
 
 ```
-http://localhost:3000
+http://localhost:3001
 ```
 
-The backend API is available at `http://localhost:8000`.
+The backend API is available at `http://localhost:8001`.
 
 ---
 
@@ -146,3 +146,13 @@ The UI connects to `http://localhost:8000` by default.
 
 - Docker ≥ 24 and Docker Compose v2, **or** Python 3.11+ for the CLI
 - An [Anthropic API key](https://console.anthropic.com/)
+
+## License
+
+MIT License — see [LICENSE](LICENSE) for details.
+
+---
+
+## Author
+
+**Michael Lianeris**
